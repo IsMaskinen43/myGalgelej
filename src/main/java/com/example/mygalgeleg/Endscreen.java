@@ -16,4 +16,10 @@ public class Endscreen extends AppCompatActivity {
         winOrNha  = findViewById(R.id.label_Endscreen);
         winOrNha.setText(intent.getStringExtra("EXTRA_MESSAGE"));
     }
+
+    protected void onResume() {
+        super.onResume();
+        getPreferences(MODE_PRIVATE).edit().clear().apply();
+
+    }
 }

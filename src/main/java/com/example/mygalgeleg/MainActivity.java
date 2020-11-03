@@ -1,6 +1,7 @@
 
 package com.example.mygalgeleg;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,15 +13,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.OnLifecycleEvent;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    Galgelogik spil;
+    IGalgelogik spil;
     Button btn_enter;
     TextView textView_Geuss_Letters;
     EditText inputField;
     TextView visibelWord;
+    int fails = 0;
     static boolean win = false;
 
     @Override
@@ -33,6 +33,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         inputField = findViewById(R.id.text_input);
         spil = new Galgelogik();
+        spil.nulstil();
+        getPreferences(MODE_PRIVATE).edit().putString("word", spil.getOrdet()).apply();
         visibelWord = findViewById(R.id.text_Output);
 
     }
@@ -41,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void changeImage (int x){
         ImageView image = findViewById(R.id.image_galje);
         int id;
+        fails = x;
         switch (x){
             case 1:
                 id = R.drawable.forkert1;
@@ -76,14 +79,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void turn(String geuss){
-
-        // if(geuss.length() > 1){
-        //  if(geuss == spil.getOrdet()){
-
-        //}
-        //}else {
         spil.gætBogstav(geuss);
-        //}
         String letters = "Brugte bogstaver: ";
         for(String s : spil.getBrugteBogstaver()){
             letters = letters + " " + s;
@@ -91,35 +87,45 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         visibelWord.setText(spil.getSynligtOrd());
         textView_Geuss_Letters.setText(letters);
         changeImage(spil.getAntalForkerteBogstaver());
+        inputField.setText("");
+
         if(spil.erSpilletSlut()){
             Intent endsceen = new Intent(this, Endscreen.class);
-
             if(!spil.erSpilletVundet()){
-                endsceen.putExtra("EXTRA_MESSAGE","Tabt");
+                endsceen.putExtra("EXTRA_MESSAGE","Tabt ordret var: " + spil.getOrdet());
             }else{
-                endsceen.putExtra("EXTRA_MESSAGE","Vundet");
+                endsceen.putExtra("EXTRA_MESSAGE","Vundet med " + spil.getAntalForkerteBogstaver() + " fejl gæt");
             }
-
             startActivity(endsceen);
         }
+
     }
 
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-    public void saveData() {
+
+    public void onPause() {
+        super.onPause();
         SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("geuss_letters", textView_Geuss_Letters.getText().toString());
         editor.putString("word",spil.getOrdet());
+        editor.putString("username", LogIn.username);
         editor.apply();
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-    public void loadData() {
+    @SuppressLint("CommitPrefEdits")
+    public void onStop(){
+        super.onStop();
+        this.getPreferences(Context.MODE_PRIVATE).edit().clear().commit();
+    }
+
+
+    public void onResume() {
+        super.onResume();
         SharedPreferences sharedPref = this.getPreferences(MODE_PRIVATE);
         String word = sharedPref.getString("word","");
         String geuss_letters = sharedPref.getString("geuss_letters", "");
-
+        LogIn.username = sharedPref.getString("username","");
         spil.nulstil();
         spil.setWord(word);
         for(String l : geuss_letters.split(" ")){

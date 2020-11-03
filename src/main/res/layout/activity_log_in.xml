@@ -13,14 +13,28 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:text="Name"
-        tools:layout_editor_absoluteX="100dp"
-        tools:layout_editor_absoluteY="117dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.16" />
 
     <Button
         android:id="@+id/logIn_Btn_Login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
         android:text="Play"
-        tools:layout_editor_absoluteX="100dp"
-        tools:layout_editor_absoluteY="179dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.312"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logIn_EditTxt_Login" />
+
+    <Button
+        android:id="@+id/logIn_btn_highscore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Highscore"
+        tools:layout_editor_absoluteX="101dp"
+        tools:layout_editor_absoluteY="351dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
