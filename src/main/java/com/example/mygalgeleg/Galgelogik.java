@@ -19,7 +19,16 @@ public class Galgelogik implements IGalgelogik {
   private boolean spilletErVundet;
   private boolean spilletErTabt;
 
-  public Galgelogik() {
+  private static Galgelogik instance = null;
+
+  public static Galgelogik getInstance() {
+    if(instance == null){
+      instance = new Galgelogik();
+    }
+    return instance;
+  }
+
+  private Galgelogik() {
     muligeOrd.add("bil");
     muligeOrd.add("computer");
     muligeOrd.add("programmering");

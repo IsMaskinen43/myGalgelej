@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btn_enter.setOnClickListener(this);
 
         inputField = findViewById(R.id.text_input);
-        spil = new Galgelogik();
+        spil = Galgelogik.getInstance();
         spil.nulstil();
         getPreferences(MODE_PRIVATE).edit().putString("word", spil.getOrdet()).apply();
         visibelWord = findViewById(R.id.text_Output);

@@ -30,9 +30,10 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
     public void onClick(View view) {
         if(view == btn){
             username = view_username.getText().toString();
-            Intent main = new Intent(this, MainActivity.class);
+            Intent main = new Intent(this, ChoosePlayMode.class);
             this.getPreferences(Context.MODE_PRIVATE).edit().clear().apply();
             SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putString("username", LogIn.username).apply();
             startActivity(main);
