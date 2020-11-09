@@ -1,7 +1,6 @@
 
 package com.example.mygalgeleg;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -21,7 +20,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     EditText inputField;
     TextView visibelWord;
     int fails = 0;
-    static boolean win = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +37,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         visibelWord = findViewById(R.id.text_Output);
 
     }
-
 
     public void changeImage (int x){
         ImageView image = findViewById(R.id.image_galje);
@@ -95,13 +93,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 endsceen.putExtra("EXTRA_MESSAGE","Tabt ordret var: " + spil.getOrdet());
             }else{
                 endsceen.putExtra("EXTRA_MESSAGE","Vundet med " + spil.getAntalForkerteBogstaver() + " fejl gæt");
+                System.out.println("Username er: "+ LogIn.username);
+                DTOhigscore dto = new DTOhigscore(LogIn.username, spil.getOrdet(), spil.getAntalForkerteBogstaver());
+                DatabaseHelper db = new DatabaseHelper(this);
+                db.addData(dto);
             }
             startActivity(endsceen);
         }
 
     }
-
-
 
     public void onPause() {
         super.onPause();
@@ -113,24 +113,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         editor.apply();
     }
 
-    @SuppressLint("CommitPrefEdits")
-    public void onStop(){
-        super.onStop();
-        this.getPreferences(Context.MODE_PRIVATE).edit().clear().commit();
+
+    public void onDestroy(){
+        super.onDestroy();
+       this.getPreferences(Context.MODE_PRIVATE).edit().clear().apply();
     }
 
 
     public void onResume() {
         super.onResume();
-        SharedPreferences sharedPref = this.getPreferences(MODE_PRIVATE);
-        String word = sharedPref.getString("word","");
-        String geuss_letters = sharedPref.getString("geuss_letters", "");
-        LogIn.username = sharedPref.getString("username","");
-        spil.nulstil();
-        spil.setWord(word);
-        for(String l : geuss_letters.split(" ")){
-            turn(l);
-        }
+        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+       // String word = sharedPref.getString("word","");
+       // String geuss_letters = sharedPref.getString("geuss_letters", "");
+
+     //   LogIn.username = sharedPref.getString("username","");
+
+      //  spil.nulstil();
+        //spil.setWord(word);
+        //for(String l : geuss_letters.split(" ")){
+        //    turn(l);
+        //}
 
 
     }

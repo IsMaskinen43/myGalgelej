@@ -2,6 +2,7 @@ package com.example.mygalgeleg;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -31,6 +32,9 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
             username = view_username.getText().toString();
             Intent main = new Intent(this, MainActivity.class);
             this.getPreferences(Context.MODE_PRIVATE).edit().clear().apply();
+            SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putString("username", LogIn.username).apply();
             startActivity(main);
         } else if(view == btn_highscore){
             Intent hs = new Intent(this, highscore.class);

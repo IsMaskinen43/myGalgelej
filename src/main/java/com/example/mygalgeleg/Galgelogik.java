@@ -7,7 +7,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Random;
 
 public class Galgelogik implements IGalgelogik {
   /** AHT afprøvning er muligeOrd synlig på pakkeniveau */
@@ -73,7 +72,8 @@ public class Galgelogik implements IGalgelogik {
     spilletErVundet = false;
     spilletErTabt = false;
     if (muligeOrd.isEmpty()) throw new IllegalStateException("Listen over ord er tom!");
-    ordet = muligeOrd.get(new Random().nextInt(muligeOrd.size()));
+   // ordet = muligeOrd.get(new Random().nextInt(muligeOrd.size()));
+    ordet = "ba";
     opdaterSynligtOrd();
   }
 
